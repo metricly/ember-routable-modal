@@ -4,9 +4,10 @@ import Config from 'ember-routable-modal/configuration';
 export default Ember.Service.extend({
     routing: Ember.inject.service('-routing'),
     routeName: null,
+    appContainer: Ember.testing ? '#ember-testing' : 'body',
     activeListener: function() {
         if (typeof Ember.$ !== 'undefined') {
-            Ember.$('body')[this.get('routeName') ? 'addClass' : 'removeClass'](Config.modalOpenBodyClassName);
+            Ember.$(this.get('appContainer'))[this.get('routeName') ? 'addClass' : 'removeClass'](Config.modalOpenBodyClassName);
         }
     }.observes('routeName'),
     init() {
@@ -18,6 +19,12 @@ export default Ember.Service.extend({
                     this.set('routeName', null);
                 }
             });
+        }
+    },
+    willDestroy() {
+        Ember.$(this.get('appContainer')).removeClass(Config.modalOpenBodyClassName);
+        if (typeof Ember.$ !== 'undefined' && typeof window !== 'undefined') {
+          Ember.$(window).off('popstate.ember-routable-modal');
         }
     },
     clear() {
