@@ -1,4 +1,4 @@
-import { click, currentURL, visit, find, findAll } from '@ember/test-helpers';
+import { click, currentURL, currentRouteName, visit, find, findAll } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import config from 'ember-routable-modal/configuration';
@@ -20,12 +20,14 @@ module('Acceptance | nested modals', function(hooks) {
       // Caught TransitionAborted
     }
     assert.equal(currentURL(), '/test/nested-one');
+    assert.equal(currentRouteName(), 'index.test.nested-one');
     assert.ok(findAll(joinClasses(config.modalClassNames)));
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
 
     await click('.routable-modal--close');
     assert.equal(currentURL(), '/');
+    assert.equal(currentRouteName(), 'index.index');
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
   });
@@ -34,12 +36,14 @@ module('Acceptance | nested modals', function(hooks) {
     await visit('/test/nested-one');
 
     assert.equal(currentURL(), '/test/nested-one');
+    assert.equal(currentRouteName(), 'index.test.nested-one');
     assert.ok(findAll(joinClasses(config.modalClassNames)));
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
 
     await click('.routable-modal--close');
     assert.equal(currentURL(), '/');
+    assert.equal(currentRouteName(), 'index.index');
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
   });

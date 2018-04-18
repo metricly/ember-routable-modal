@@ -1,4 +1,4 @@
-import { click, currentURL, find, findAll, visit } from '@ember/test-helpers';
+import { click, currentURL, currentRouteName, find, findAll, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import config from 'ember-routable-modal/configuration';
@@ -20,6 +20,7 @@ module('Acceptance | modals with synchronous models', function(hooks) {
       // Caught TransitionAborted
     }
     assert.equal(currentURL(), '/model-one');
+    assert.equal(currentRouteName(), 'index.model-one');
     assert.ok(findAll(joinClasses(config.modalClassNames)));
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
@@ -27,6 +28,7 @@ module('Acceptance | modals with synchronous models', function(hooks) {
 
     await click('.routable-modal--close');
     assert.equal(currentURL(), '/');
+    assert.equal(currentRouteName(), 'index.index');
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
   });
@@ -35,6 +37,7 @@ module('Acceptance | modals with synchronous models', function(hooks) {
     await visit('/model-one');
 
     assert.equal(currentURL(), '/model-one');
+    assert.equal(currentRouteName(), 'index.model-one');
     assert.ok(findAll(joinClasses(config.modalClassNames)));
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
@@ -42,6 +45,7 @@ module('Acceptance | modals with synchronous models', function(hooks) {
 
     await click('.routable-modal--close');
     assert.equal(currentURL(), '/');
+    assert.equal(currentRouteName(), 'index.index');
     assert.ok(find('#application-title'));
     assert.ok(find('#index-title'));
   });
